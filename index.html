@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atharv Dhupkar — Developer Portfolio</title>
+<meta name="description" content="Portfolio of Atharv Dhupkar, software developer.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:            #0a0e14;
+    --bg-panel:      #111722;
+    --bg-panel-2:    #151c29;
+    --border:        #212a3a;
+    --text-primary:  #dbe2ef;
+    --text-muted:    #8b95a7;
+    --accent-cyan:   #5ec9de;
+    --accent-amber:  #e3b341;
+    --accent-green:  #7ee787;
+
+    --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    --font-body: 'Inter', -apple-system, sans-serif;
+
+    --maxw: 880px;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--bg);
+    color:var(--text-primary);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+  ::selection{ background:var(--accent-cyan); color:var(--bg); }
+  :focus-visible{ outline:2px solid var(--accent-cyan); outline-offset:3px; border-radius:2px; }
+
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+
+  header{
+    position:sticky; top:0; z-index:100;
+    background:rgba(10,14,20,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+
+  .nav-inner{
+    max-width:var(--maxw); margin:0 auto; padding:0 24px;
+    display:flex; align-items:center; justify-content:space-between;
+    height:56px;
+  }
+
+  .logo{
+    font-family:var(--font-mono); font-weight:700; font-size:15px;
+    color:var(--text-primary); display:flex; align-items:center; gap:8px;
+  }
+  .logo .dot{ color:var(--accent-amber); }
+
+  .tabs{ display:flex; height:56px; }
+
+  .tab{
+    font-family:var(--font-mono); font-size:13px; color:var(--text-muted);
+    display:flex; align-items:center; gap:8px; padding:0 16px;
+    border-right:1px solid var(--border);
+    transition:color .15s ease, background .15s ease;
+    cursor:pointer;
+  }
+  .tab:hover{ color:var(--text-primary); background:var(--bg-panel); }
+  .tab .ext{ opacity:.5; }
+
+  .nav-toggle{ display:none; }
+
+  @media (max-width:640px){
+    .tabs{ display:none; }
+    .nav-toggle{
+      display:block; font-family:var(--font-mono); color:var(--text-muted);
+      background:none; border:none; font-size:20px; cursor:pointer;
+    }
+  }
+
+  .hero{ padding:96px 0 72px; }
+
+  .hero-eyebrow{
+    font-family:var(--font-mono); font-size:13px; color:var(--accent-green);
+    margin-bottom:20px; display:flex; align-items:center; gap:10px;
+  }
+  .hero-eyebrow::before{
+    content:''; width:8px; height:8px; border-radius:50%;
+    background:var(--accent-green); box-shadow:0 0 8px var(--accent-green);
+  }
+
+  .code-block{
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+    box-shadow:0 20px 60px -20px rgba(0,0,0,0.5);
+  }
+
+  .code-titlebar{
+    display:flex; align-items:center; gap:8px;
+    padding:10px 14px;
+    background:var(--bg-panel-2);
+    border-bottom:1px solid var(--border);
+    font-family:var(--font-mono); font-size:12px; color:var(--text-muted);
+  }
+  .code-titlebar .traffic{ display:flex; gap:6px; margin-right:8px; }
+  .code-titlebar .traffic span{
+    width:10px; height:10px; border-radius:50%; display:inline-block;
+    background:#3a4353;
+  }
+
+  .code-body{
+    padding:24px 20px;
+    font-family:var(--font-mono);
+    font-size:clamp(13px, 2.6vw, 16px);
+    line-height:1.85;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+
+  .code-body .ln{ color:var(--text-muted); opacity:.4; user-select:none; display:inline-block; width:22px; }
+  .tok-kw{ color:var(--accent-cyan); }
+  .tok-key{ color:#a8c0e0; }
+  .tok-str{ color:var(--accent-amber); }
+  .tok-com{ color:var(--text-muted); font-style:italic; }
+  .tok-punc{ color:var(--text-muted); }
+
+  .cursor{
+    display:inline-block; width:8px; height:1.1em; background:var(--accent-cyan);
+    vertical-align:text-bottom; margin-left:2px;
+    animation:blink 1s step-end infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .hero-actions{ display:flex; gap:12px; margin-top:32px; flex-wrap:wrap; }
+
+  .btn{
+    font-family:var(--font-mono); font-size:14px; font-weight:500;
+    padding:11px 20px; border-radius:6px;
+    border:1px solid var(--border);
+    display:inline-flex; align-items:center; gap:8px;
+    transition:border-color .15s ease, transform .15s ease, background .15s ease;
+  }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn-primary{ background:var(--accent-cyan); color:var(--bg); border-color:var(--accent-cyan); }
+  .btn-primary:hover{ background:#7ad4e6; }
+  .btn-ghost{ background:transparent; color:var(--text-primary); }
+  .btn-ghost:hover{ border-color:var(--accent-cyan); color:var(--accent-cyan); }
+
+  section{ padding:72px 0; border-top:1px solid var(--border); }
+
+  .section-head{ margin-bottom:40px; }
+  .section-num{
+    font-family:var(--font-mono); font-size:13px; color:var(--accent-amber);
+    display:block; margin-bottom:8px;
+  }
+  .section-title{
+    font-family:var(--font-mono); font-size:clamp(22px,4vw,28px); font-weight:700;
+    color:var(--text-primary);
+  }
+
+  /* ABOUT */
+  .about-grid{
+    display:grid; grid-template-columns:auto 1.1fr 1fr; gap:40px;
+    align-items:start;
+  }
+
+  .avatar-frame{ width:150px; }
+  .avatar-titlebar{
+    display:flex; align-items:center; gap:6px;
+    padding:8px 10px;
+    background:var(--bg-panel-2);
+    border:1px solid var(--border);
+    border-bottom:none;
+    border-radius:8px 8px 0 0;
+    font-family:var(--font-mono); font-size:10.5px; color:var(--text-muted);
+  }
+  .avatar-titlebar .traffic{ display:flex; gap:5px; margin-right:4px; }
+  .avatar-titlebar .traffic span{
+    width:8px; height:8px; border-radius:50%; display:inline-block;
+    background:#3a4353;
+  }
+  .avatar-photo{
+    width:150px; height:150px;
+    object-fit:cover; display:block;
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:0 0 8px 8px;
+  }
+
+  @media (max-width:900px){
+    .about-grid{ grid-template-columns:1fr; }
+    .avatar-frame{ width:120px; }
+    .avatar-photo{ width:120px; height:120px; }
+  }
+
+  .about-text p{ color:var(--text-muted); margin-bottom:16px; font-size:15.5px; }
+  .about-text strong{ color:var(--text-primary); font-weight:600; }
+
+  .skills-list{ list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .skills-list li{
+    font-family:var(--font-mono); font-size:13.5px; color:var(--text-primary);
+    background:var(--bg-panel); border:1px solid var(--border);
+    padding:9px 12px; border-radius:6px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .skills-list li::before{ content:'▸'; color:var(--accent-cyan); }
+
+  /* PROJECTS */
+  .project-list{ display:flex; flex-direction:column; gap:1px; background:var(--border); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+
+  .project{
+    background:var(--bg-panel);
+    padding:28px 24px;
+    display:grid; grid-template-columns:auto 1fr auto; gap:20px; align-items:start;
+    transition:background .15s ease;
+  }
+  .project:hover{ background:var(--bg-panel-2); }
+
+  .project-idx{ font-family:var(--font-mono); color:var(--text-muted); font-size:13px; padding-top:3px; }
+
+  .project-name{ font-family:var(--font-mono); font-size:17px; font-weight:600; margin-bottom:6px; color:var(--text-primary); }
+  .project-desc{ color:var(--text-muted); font-size:14.5px; margin-bottom:12px; max-width:52ch; }
+  .project-tags{ display:flex; gap:8px; flex-wrap:wrap; }
+  .project-tags span{
+    font-family:var(--font-mono); font-size:11.5px; color:var(--accent-green);
+    background:rgba(126,231,135,0.08); border:1px solid rgba(126,231,135,0.25);
+    padding:3px 8px; border-radius:4px;
+  }
+
+  .project-links{ display:flex; flex-direction:column; gap:8px; align-items:flex-end; }
+  .project-links a{
+    font-family:var(--font-mono); font-size:12.5px; color:var(--accent-cyan);
+    display:flex; align-items:center; gap:5px; white-space:nowrap;
+  }
+  .project-links a:hover{ text-decoration:underline; }
+
+  @media (max-width:640px){
+    .project{ grid-template-columns:1fr; }
+    .project-links{ align-items:flex-start; flex-direction:row; flex-wrap:wrap; }
+  }
+
+  /* PUBLICATIONS */
+  .pub-list{ display:flex; flex-direction:column; gap:1px; background:var(--border); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+
+  .pub{
+    background:var(--bg-panel);
+    padding:24px;
+    display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:start;
+    transition:background .15s ease;
+  }
+  .pub:hover{ background:var(--bg-panel-2); }
+
+  .pub-badge{
+    font-family:var(--font-mono); font-size:11px; color:var(--bg);
+    background:var(--accent-amber);
+    padding:4px 8px; border-radius:4px; font-weight:700;
+    white-space:nowrap; height:fit-content;
+  }
+
+  .pub-title{ font-family:var(--font-mono); font-size:16px; font-weight:600; margin-bottom:6px; color:var(--text-primary); }
+  .pub-meta{ color:var(--text-muted); font-size:13.5px; margin-bottom:8px; }
+  .pub-meta strong{ color:var(--text-primary); font-weight:500; }
+  .pub-desc{ color:var(--text-muted); font-size:14px; margin-bottom:10px; max-width:60ch; }
+  .pub-link{
+    font-family:var(--font-mono); font-size:12.5px; color:var(--accent-cyan);
+    display:inline-flex; align-items:center; gap:5px;
+  }
+  .pub-link:hover{ text-decoration:underline; }
+
+  @media (max-width:640px){
+    .pub{ grid-template-columns:1fr; }
+  }
+
+  /* CONTACT */
+  .contact-block{
+    background:var(--bg-panel); border:1px solid var(--border); border-radius:8px;
+    padding:36px 32px;
+  }
+  .contact-block p{ color:var(--text-muted); margin-bottom:24px; max-width:48ch; }
+  .contact-links{ display:flex; flex-wrap:wrap; gap:12px; }
+
+  footer{
+    padding:32px 0 48px; text-align:center;
+    font-family:var(--font-mono); font-size:12.5px; color:var(--text-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .cursor{ animation:none; }
+    *{ transition:none !important; animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <div class="logo">~/<span class="dot">portfolio</span></div>
+    <nav class="tabs">
+      <a class="tab" href="#about">about<span class="ext">.js</span></a>
+      <a class="tab" href="#projects">projects<span class="ext">.js</span></a>
+      <a class="tab" href="#publications">publications<span class="ext">.js</span></a>
+      <a class="tab" href="#contact">contact<span class="ext">.js</span></a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero" style="border-top:none;">
+    <div class="hero-eyebrow">available for work</div>
+
+    <div class="code-block">
+      <div class="code-titlebar">
+        <span class="traffic"><span></span><span></span><span></span></span>
+        developer.js
+      </div>
+      <div class="code-body" id="typedCode"></div>
+    </div>
+
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#projects">View projects →</a>
+      <a class="btn btn-ghost" href="#contact">Get in touch</a>
+      <a class="btn btn-ghost" href="/Atharv Dhupkar Resume (1).pdf" download>Download Resume</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2 class="section-title">about</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="avatar-frame">
+        <div class="avatar-titlebar">
+          <span class="traffic"><span></span><span></span><span></span></span>
+          profile.jpg
+        </div>
+        <img class="avatar-photo" src="atharv22.jpg" alt="Photo of Atharv Dhupkar" onerror="this.src='https://placehold.co/300x300/151c29/8b95a7?text=Add+profile.jpg'">
+      </div>
+
+      <div class="about-text">
+        <p>I'm a <strong>software developer</strong> who likes building things that are fast, simple, and don't get in the user's way. I care about clean code as much as clean interfaces — the two usually go together.</p>
+        <p>Most of my work sits at the intersection of <strong>backend systems</strong> and <strong>practical frontend</strong> — APIs, data pipelines, and the UI layers that make them usable. I like shipping over polishing forever.</p>
+        <p>Outside of work I read source code for fun, contribute to a couple of open-source projects, and am usually mid-way through breaking something in a side project.</p>
+      </div>
+
+      <ul class="skills-list">
+        <li>JavaScript / TypeScript</li>
+        <li>React / Next.js</li>
+        <li>Node.js</li>
+        <li>Python</li>
+        <li>PostgreSQL</li>
+        <li>Docker</li>
+        <li>AWS</li>
+        <li>Git / CI-CD</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2 class="section-title">projects</h2>
+    </div>
+
+    <div class="project-list">
+      <div class="project">
+        <div class="project-idx">01</div>
+        <div>
+          <div class="project-name">Sign Language Interpreter</div>
+          <div class="project-desc">Developed a system that translates sign language gestures into text and speech using ML models. Enhanced real-time communication for the hearing impaired through image recognition.</div>
+          <div class="project-tags">
+            <span>Python</span><span>TensorFlow</span><span>Keras</span><span>CNN</span><span>FastAPI</span><span>matplotlib</span><span>Pandas</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-idx">02</div>
+        <div>
+          <div class="project-name">DDoS Attack Prevention Tool</div>
+          <div class="project-desc">A cybersecurity tool that monitors network traffic to detect unusual patterns. It mitigates Distributed Denial of Service (DDoS) attacks using filtering and rate-limiting.</div>
+          <div class="project-tags">
+            <span>Python</span><span>FastAPI</span><span>Docker</span><span>Linux</span><span>Scapy</span><span>PostgreSQL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-idx">03</div>
+        <div>
+          <div class="project-name">PhishRL: An End-to-End Reinforcement Learning Pipeline for Automated Email Threat Triage</div>
+          <div class="project-desc">Built a Reinforcement Learning-based system to detect, score, and prioritize phishing emails, enabling automated threat triage and faster security incident response.</div>
+          <div class="project-tags">
+            <span>JavaScript</span><span>N8N Automation Tool</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-idx">04</div>
+        <div>
+          <div class="project-name">Resume Screening AI – Intelligent ATS &amp; Candidate Ranking Platform</div>
+          <div class="project-desc">Resume Screening AI is an AI-driven Applicant Tracking System (ATS) that automates resume parsing, skill extraction, candidate ranking, and job-fit analysis.</div>
+          <div class="project-tags">
+            <span>Next.js</span><span>React.js</span><span>Tailwind CSS</span><span>Uvicorn</span><span>PostgreSQL</span><span>TypeScript</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-idx">05</div>
+        <div>
+          <div class="project-name">DSA Benchmark Studio</div>
+          <div class="project-desc">A web-based platform that evaluates and compares the performance of different Data Structures and Algorithms — measuring execution time, memory usage, and time complexity across input sizes with interactive visualizations.</div>
+          <div class="project-tags">
+            <span>Python</span><span>Next.js</span><span>React</span><span>Tailwind CSS</span><span>PostgreSQL</span><span>TypeScript</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       PUBLICATIONS
+       EDIT ME: send me the real details (title, conference,
+       date, link, summary) and I'll fill this in for you —
+       right now it's a placeholder.
+       ============================================ -->
+  <section id="publications">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2 class="section-title">publications</h2>
+    </div>
+
+    <div class="pub-list">
+      <div class="pub">
+        <span class="pub-badge">IEEE</span>
+        <div>
+          <div class="pub-title">PhishRL: An End-to-End Reinforcement Learning Pipeline for Automated Email Threat Triage</div>
+          <div class="pub-meta"><strong>2026 6th International Conference on Intelligent Technologies (CONIT) </strong>  July 2026</div>
+          <div class="pub-desc">PhishRL is an AI-powered email threat detection system that leverages Reinforcement Learning to automatically identify, classify, and prioritize phishing emails based on their risk level. The platform analyzes email content, headers, URLs, and attachments to generate intelligent threat scores, helping security teams respond more efficiently. By automating email threat triage, PhishRL reduces manual analysis time, improves detection accuracy, and strengthens organizational cybersecurity.</div>
+          <a class="pub-link" href="https://ieeexplore.ieee.org/document/11620809" target="_blank" rel="noopener">View on IEEE Xplore ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2 class="section-title">contact</h2>
+    </div>
+
+    <div class="contact-block">
+      <p>Have a project in mind, or just want to talk shop? My inbox is open.</p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="mailto:atharvdhupkar6@gmail.com?subject=Portfolio Inquiry">Email Me</a>
+        <a class="btn btn-ghost" href="https://github.com/atharv-dhupkar22" target="_blank" rel="noopener">GitHub ↗</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/atharv-dhupkar-ba2895286/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn btn-ghost" href="https://x.com/AtharvDhupkar" target="_blank" rel="noopener">Twitter / X ↗</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © <span id="year"></span> Atharv Dhupkar · built with HTML, CSS &amp; a little JS
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const dev = {
+    name: "Atharv Dhupkar",
+    title: "Software Developer",
+    focus: ["backend systems", "REST API Development", "AI & Machine Learning", "Cloud & AWS", "Gen AI", "Full-Stack Web Applications"],
+    location: "Mumbai, India",
+  };
+
+  const html = `<span class="ln">1</span><span class="tok-kw">const</span> <span class="tok-key">developer</span> <span class="tok-punc">=</span> <span class="tok-punc">{</span>
+<span class="ln">2</span>  <span class="tok-key">name</span><span class="tok-punc">:</span> <span class="tok-str">"${dev.name}"</span><span class="tok-punc">,</span>
+<span class="ln">3</span>  <span class="tok-key">title</span><span class="tok-punc">:</span> <span class="tok-str">"${dev.title}"</span><span class="tok-punc">,</span>
+<span class="ln">4</span>  <span class="tok-key">focus</span><span class="tok-punc">:</span> <span class="tok-punc">[</span>${dev.focus.map(f => `<span class="tok-str">"${f}"</span>`).join('<span class="tok-punc">, </span>')}<span class="tok-punc">]</span><span class="tok-punc">,</span>
+<span class="ln">5</span>  <span class="tok-key">location</span><span class="tok-punc">:</span> <span class="tok-str">"${dev.location}"</span><span class="tok-punc">,</span>
+<span class="ln">6</span>  <span class="tok-com">// always shipping something</span>
+<span class="ln">7</span><span class="tok-punc">}</span><span class="cursor"></span>`;
+
+  const el = document.getElementById('typedCode');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduceMotion) {
+    el.innerHTML = html;
+  } else {
+    el.innerHTML = html;
+    el.style.opacity = 0;
+    requestAnimationFrame(() => {
+      el.style.transition = 'opacity .4s ease';
+      el.style.opacity = 1;
+    });
+  }
+</script>
+
+</body>
+</html>
